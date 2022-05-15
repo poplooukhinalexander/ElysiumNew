@@ -1,0 +1,38 @@
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #E01A76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#root {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.App {
+    width: 800px;
+}
+
+
+.nav-item {
+    padding: 15px;
+    margin: 15px;
+}
+
+

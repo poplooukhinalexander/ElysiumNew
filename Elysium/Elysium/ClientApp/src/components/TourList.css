@@ -1,0 +1,17 @@
+﻿.tour-enter {
+    transform: translateX(350px);
+}
+
+.tour-enter-active {
+    transform: translateX(0px);
+    transition: all 500ms ease-in;
+}
+
+.tour-exit {
+    opacity: 1;
+}
+
+.tour-exit-active {
+    transform: translateX(-350px);
+    transition: all 500ms ease-in;
+}
