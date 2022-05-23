@@ -7,9 +7,9 @@
         public string? Description { get; set; }
         public virtual List<Category> Categories { get; set; } = new List<Category>();
         public RouteDifficulty Difficulty { get; set; } = RouteDifficulty.Medium;
-        public Guid DirectionId { get; set; }
-        public Location Direction { get; set; } = default!;
-        public virtual List<Location> Points { get; set; } = new List<Location>();
+        public Guid LocationId { get; set; }
+        public virtual Location Location { get; set; } = default!;
+        public virtual List<RoutePoint> Points { get; set; } = new List<RoutePoint>();
         public Guid ProviderId { get; set; }
         public virtual Provider Provider { get; set; } = default!;
         public virtual List<Tour> Tours { get; set; } = new List<Tour>();

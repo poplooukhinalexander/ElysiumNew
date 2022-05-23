@@ -14,5 +14,7 @@
         public double Price { get; set; } = default!;
         public Guid CurrencyId { get; set; }
         public virtual Currency Currency { get; set; } = default!;
+        public int TicketNumber { get; set; } = default!;
+        public int AvailableTicketNumber { get; set; } = default!;
     }
 }
