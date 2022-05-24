@@ -7,9 +7,9 @@ namespace Elysium.Model.Configuration
     {
         public void Configure(EntityTypeBuilder<RoutePoint> builder)
         {
-            builder.Property(_ => _.Description).HasMaxLength(500);
+            builder.Property(_ => _.Description).HasMaxLength(300);
             builder.HasIndex(_ => _.LocationId);
-            builder.HasIndex(_ => _.RouteId);
+            builder.HasIndex(_ => _.ScheduleItemId);
         }
     }
 }

@@ -42,6 +42,9 @@ namespace Elysium.Migrations
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Region = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Country = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    City = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    Street = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    HouseNumber = table.Column<int>(type: "integer", nullable: true),
                     Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
                     Longitide = table.Column<double>(type: "double precision", nullable: true),
                     Latitude = table.Column<double>(type: "double precision", nullable: true)
@@ -87,114 +90,37 @@ namespace Elysium.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Routes",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
-                    Difficulty = table.Column<int>(type: "integer", nullable: false, defaultValue: 1),
-                    LocationId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProviderId = table.Column<Guid>(type: "uuid", nullable: false),
-                    VisaMandatory = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    VisaDetails = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
-                    ArchivedAt = table.Column<DateOnly>(type: "date", nullable: true),
-                    MainPhotoLink = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
-                    MainPhotoTitle = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Rate = table.Column<int>(type: "integer", nullable: false, defaultValue: 0)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Routes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Routes_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Routes_Proviers_ProviderId",
-                        column: x => x.ProviderId,
-                        principalTable: "Proviers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CategoryRoute",
-                columns: table => new
-                {
-                    CategoriesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    RoutesId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoryRoute", x => new { x.CategoriesId, x.RoutesId });
-                    table.ForeignKey(
-                        name: "FK_CategoryRoute_Categories_CategoriesId",
-                        column: x => x.CategoriesId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CategoryRoute_Routes_RoutesId",
-                        column: x => x.RoutesId,
-                        principalTable: "Routes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RoutePoint",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    LocationId = table.Column<Guid>(type: "uuid", nullable: false),
-                    RouteId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RoutePoint", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RoutePoint_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RoutePoint_Routes_RouteId",
-                        column: x => x.RouteId,
-                        principalTable: "Routes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Tours",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    StartedAt = table.Column<DateOnly>(type: "date", nullable: false),
-                    EndedAt = table.Column<DateOnly>(type: "date", nullable: false),
-                    ArchivedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    ShortDescription = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    DetailedDescription = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    Difficulty = table.Column<int>(type: "integer", nullable: true),
+                    RouteDifficultyDescription = table.Column<string>(type: "text", nullable: true),
+                    DirectionId = table.Column<Guid>(type: "uuid", nullable: false),
                     MeetPointId = table.Column<Guid>(type: "uuid", nullable: false),
-                    RouteId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Price = table.Column<double>(type: "double precision", nullable: false),
-                    CurrencyId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CurrencyCode = table.Column<string>(type: "character varying(5)", nullable: false),
-                    TicketNumber = table.Column<int>(type: "integer", nullable: false),
-                    AvailableTicketNumber = table.Column<int>(type: "integer", nullable: false),
-                    ProviderId = table.Column<Guid>(type: "uuid", nullable: true)
+                    ProviderId = table.Column<Guid>(type: "uuid", nullable: false),
+                    VisaMandatory = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    VisaDetails = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    TransferDetails = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    MainPhotoLink = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
+                    MainPhotoTitle = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    TotalRate = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
+                    MinAge = table.Column<int>(type: "integer", nullable: true),
+                    ParticipateTerms = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    ArchivedAt = table.Column<DateOnly>(type: "date", nullable: true),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tours", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tours_Currencies_CurrencyCode",
-                        column: x => x.CurrencyCode,
-                        principalTable: "Currencies",
-                        principalColumn: "Code",
+                        name: "FK_Tours_Locations_DirectionId",
+                        column: x => x.DirectionId,
+                        principalTable: "Locations",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Tours_Locations_MeetPointId",
@@ -206,38 +132,108 @@ namespace Elysium.Migrations
                         name: "FK_Tours_Proviers_ProviderId",
                         column: x => x.ProviderId,
                         principalTable: "Proviers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Tours_Routes_RouteId",
-                        column: x => x.RouteId,
-                        principalTable: "Routes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Photos",
+                name: "CategoryTour",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Link = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
-                    Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    RoutePointId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ArchivedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LocationId = table.Column<Guid>(type: "uuid", nullable: true)
+                    CategoriesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RoutesId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Photos", x => x.Id);
+                    table.PrimaryKey("PK_CategoryTour", x => new { x.CategoriesId, x.RoutesId });
                     table.ForeignKey(
-                        name: "FK_Photos_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
+                        name: "FK_CategoryTour_Categories_CategoriesId",
+                        column: x => x.CategoriesId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CategoryTour_Tours_RoutesId",
+                        column: x => x.RoutesId,
+                        principalTable: "Tours",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Language",
+                columns: table => new
+                {
+                    Code = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    TourId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Language", x => x.Code);
+                    table.ForeignKey(
+                        name: "FK_Language_Tours_TourId",
+                        column: x => x.TourId,
+                        principalTable: "Tours",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rides",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    StartedAt = table.Column<DateOnly>(type: "date", nullable: false),
+                    EndedAt = table.Column<DateOnly>(type: "date", nullable: false),
+                    ArchivedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    TourId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Price = table.Column<double>(type: "double precision", nullable: false),
+                    CurrencyId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CurrencyCode = table.Column<string>(type: "character varying(5)", nullable: false),
+                    TicketNumber = table.Column<int>(type: "integer", nullable: false),
+                    AvailableTicketNumber = table.Column<int>(type: "integer", nullable: false),
+                    ProviderId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rides", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Rides_Currencies_CurrencyCode",
+                        column: x => x.CurrencyCode,
+                        principalTable: "Currencies",
+                        principalColumn: "Code",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Rides_Proviers_ProviderId",
+                        column: x => x.ProviderId,
+                        principalTable: "Proviers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Photos_RoutePoint_RoutePointId",
-                        column: x => x.RoutePointId,
-                        principalTable: "RoutePoint",
+                        name: "FK_Rides_Tours_TourId",
+                        column: x => x.TourId,
+                        principalTable: "Tours",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ScheduleItems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    DayNumber = table.Column<int>(type: "integer", nullable: false),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    TourId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ScheduleItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ScheduleItems_Tours_TourId",
+                        column: x => x.TourId,
+                        principalTable: "Tours",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -266,6 +262,59 @@ namespace Elysium.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Photos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Link = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
+                    Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    ScheduleItemId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ArchivedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LocationId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Photos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Photos_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Photos_ScheduleItems_ScheduleItemId",
+                        column: x => x.ScheduleItemId,
+                        principalTable: "ScheduleItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoutePoint",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Description = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
+                    LocationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ScheduleItemId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoutePoint", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RoutePoint_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RoutePoint_ScheduleItems_ScheduleItemId",
+                        column: x => x.ScheduleItemId,
+                        principalTable: "ScheduleItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_Name",
                 table: "Categories",
@@ -273,14 +322,19 @@ namespace Elysium.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryRoute_RoutesId",
-                table: "CategoryRoute",
+                name: "IX_CategoryTour_RoutesId",
+                table: "CategoryTour",
                 column: "RoutesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Locations_Country_Region",
+                name: "IX_Language_TourId",
+                table: "Language",
+                column: "TourId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Locations_Country_Region_City_Street_HouseNumber",
                 table: "Locations",
-                columns: new[] { "Country", "Region" });
+                columns: new[] { "Country", "Region", "City", "Street", "HouseNumber" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Locations_Longitide_Latitude",
@@ -309,9 +363,9 @@ namespace Elysium.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photos_RoutePointId",
+                name: "IX_Photos_ScheduleItemId",
                 table: "Photos",
-                column: "RoutePointId");
+                column: "ScheduleItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Proviers_Name",
@@ -325,39 +379,54 @@ namespace Elysium.Migrations
                 column: "Rate");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Rides_AvailableTicketNumber",
+                table: "Rides",
+                column: "AvailableTicketNumber");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rides_CurrencyCode",
+                table: "Rides",
+                column: "CurrencyCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rides_CurrencyId",
+                table: "Rides",
+                column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rides_Price_CurrencyId",
+                table: "Rides",
+                columns: new[] { "Price", "CurrencyId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rides_ProviderId",
+                table: "Rides",
+                column: "ProviderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rides_TourId",
+                table: "Rides",
+                column: "TourId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RoutePoint_LocationId",
                 table: "RoutePoint",
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoutePoint_RouteId",
+                name: "IX_RoutePoint_ScheduleItemId",
                 table: "RoutePoint",
-                column: "RouteId");
+                column: "ScheduleItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Routes_Difficulty",
-                table: "Routes",
-                column: "Difficulty");
+                name: "IX_ScheduleItems_DayNumber",
+                table: "ScheduleItems",
+                column: "DayNumber");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Routes_LocationId",
-                table: "Routes",
-                column: "LocationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Routes_Name",
-                table: "Routes",
-                column: "Name");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Routes_ProviderId",
-                table: "Routes",
-                column: "ProviderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Routes_Rate",
-                table: "Routes",
-                column: "Rate");
+                name: "IX_ScheduleItems_TourId",
+                table: "ScheduleItems",
+                column: "TourId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TeamMemberTour_ToursId",
@@ -365,19 +434,19 @@ namespace Elysium.Migrations
                 column: "ToursId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tours_AvailableTicketNumber",
+                name: "IX_Tours_Difficulty",
                 table: "Tours",
-                column: "AvailableTicketNumber");
+                column: "Difficulty");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tours_CurrencyCode",
+                name: "IX_Tours_DirectionId",
                 table: "Tours",
-                column: "CurrencyCode");
+                column: "DirectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tours_CurrencyId",
+                name: "IX_Tours_IsActive",
                 table: "Tours",
-                column: "CurrencyId");
+                column: "IsActive");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tours_MeetPointId",
@@ -385,9 +454,9 @@ namespace Elysium.Migrations
                 column: "MeetPointId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tours_Price_CurrencyId",
+                name: "IX_Tours_Name",
                 table: "Tours",
-                columns: new[] { "Price", "CurrencyId" });
+                column: "Name");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tours_ProviderId",
@@ -395,18 +464,27 @@ namespace Elysium.Migrations
                 column: "ProviderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tours_RouteId",
+                name: "IX_Tours_TotalRate",
                 table: "Tours",
-                column: "RouteId");
+                column: "TotalRate");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CategoryRoute");
+                name: "CategoryTour");
+
+            migrationBuilder.DropTable(
+                name: "Language");
 
             migrationBuilder.DropTable(
                 name: "Photos");
+
+            migrationBuilder.DropTable(
+                name: "Rides");
+
+            migrationBuilder.DropTable(
+                name: "RoutePoint");
 
             migrationBuilder.DropTable(
                 name: "TeamMemberTour");
@@ -415,19 +493,16 @@ namespace Elysium.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "RoutePoint");
+                name: "Currencies");
+
+            migrationBuilder.DropTable(
+                name: "ScheduleItems");
 
             migrationBuilder.DropTable(
                 name: "TeamMembers");
 
             migrationBuilder.DropTable(
                 name: "Tours");
-
-            migrationBuilder.DropTable(
-                name: "Currencies");
-
-            migrationBuilder.DropTable(
-                name: "Routes");
 
             migrationBuilder.DropTable(
                 name: "Locations");

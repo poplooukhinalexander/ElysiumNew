@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Elysium.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220523161735_Init")]
+    [Migration("20220524203245_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace Elysium.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CategoryRoute", b =>
+            modelBuilder.Entity("CategoryTour", b =>
                 {
                     b.Property<Guid>("CategoriesId")
                         .HasColumnType("uuid");
@@ -36,7 +36,7 @@ namespace Elysium.Migrations
 
                     b.HasIndex("RoutesId");
 
-                    b.ToTable("CategoryRoute");
+                    b.ToTable("CategoryTour");
                 });
 
             modelBuilder.Entity("Elysium.Model.Category", b =>
@@ -77,11 +77,34 @@ namespace Elysium.Migrations
                     b.ToTable("Currencies");
                 });
 
+            modelBuilder.Entity("Elysium.Model.Language", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("TourId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Code");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("Language");
+                });
+
             modelBuilder.Entity("Elysium.Model.Location", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Country")
                         .IsRequired()
@@ -91,6 +114,9 @@ namespace Elysium.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)");
+
+                    b.Property<int?>("HouseNumber")
+                        .HasColumnType("integer");
 
                     b.Property<double?>("Latitude")
                         .HasColumnType("double precision");
@@ -108,11 +134,13 @@ namespace Elysium.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<string>("Street")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Region");
-
-                    b.HasIndex("Country", "Region");
 
                     b.HasIndex("Longitide", "Latitude")
                         .HasFilter("NOT Longitude IS NULL AND NOT Latitude IS NULL");
@@ -120,6 +148,8 @@ namespace Elysium.Migrations
                     b.HasIndex("Name", "Region");
 
                     b.HasIndex("Region", "Name");
+
+                    b.HasIndex("Country", "Region", "City", "Street", "HouseNumber");
 
                     b.ToTable("Locations");
                 });
@@ -141,7 +171,7 @@ namespace Elysium.Migrations
                     b.Property<Guid?>("LocationId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("RoutePointId")
+                    b.Property<Guid>("ScheduleItemId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Title")
@@ -153,7 +183,7 @@ namespace Elysium.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.HasIndex("RoutePointId");
+                    b.HasIndex("ScheduleItemId");
 
                     b.ToTable("Photos");
                 });
@@ -206,72 +236,58 @@ namespace Elysium.Migrations
                     b.ToTable("Proviers");
                 });
 
-            modelBuilder.Entity("Elysium.Model.Route", b =>
+            modelBuilder.Entity("Elysium.Model.Ride", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateOnly?>("ArchivedAt")
+                    b.Property<DateTime?>("ArchivedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("AvailableTicketNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CurrencyCode")
+                        .IsRequired()
+                        .HasColumnType("character varying(5)");
+
+                    b.Property<Guid>("CurrencyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("EndedAt")
                         .HasColumnType("date");
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(300)
-                        .HasColumnType("character varying(300)");
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
 
-                    b.Property<int>("Difficulty")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(1);
-
-                    b.Property<Guid>("LocationId")
+                    b.Property<Guid?>("ProviderId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("MainPhotoLink")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
+                    b.Property<DateOnly>("StartedAt")
+                        .HasColumnType("date");
 
-                    b.Property<string>("MainPhotoTitle")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                    b.Property<int>("TicketNumber")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<Guid>("ProviderId")
+                    b.Property<Guid>("TourId")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("Rate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
-
-                    b.Property<string>("VisaDetails")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<bool>("VisaMandatory")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Difficulty");
+                    b.HasIndex("AvailableTicketNumber");
 
-                    b.HasIndex("LocationId");
+                    b.HasIndex("CurrencyCode");
 
-                    b.HasIndex("Name");
+                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("ProviderId");
 
-                    b.HasIndex("Rate");
+                    b.HasIndex("TourId");
 
-                    b.ToTable("Routes");
+                    b.HasIndex("Price", "CurrencyId");
+
+                    b.ToTable("Rides");
                 });
 
             modelBuilder.Entity("Elysium.Model.RoutePoint", b =>
@@ -281,22 +297,56 @@ namespace Elysium.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<Guid>("LocationId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("RouteId")
+                    b.Property<Guid>("ScheduleItemId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("LocationId");
 
-                    b.HasIndex("RouteId");
+                    b.HasIndex("ScheduleItemId");
 
                     b.ToTable("RoutePoint");
+                });
+
+            modelBuilder.Entity("Elysium.Model.ScheduleItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<int>("DayNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("TourId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DayNumber");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("ScheduleItems");
                 });
 
             modelBuilder.Entity("Elysium.Model.TeamMember", b =>
@@ -342,55 +392,94 @@ namespace Elysium.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("ArchivedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly?>("ArchivedAt")
+                        .HasColumnType("date");
 
-                    b.Property<int>("AvailableTicketNumber")
+                    b.Property<string>("DetailedDescription")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int?>("Difficulty")
                         .HasColumnType("integer");
 
-                    b.Property<string>("CurrencyCode")
-                        .IsRequired()
-                        .HasColumnType("character varying(5)");
-
-                    b.Property<Guid>("CurrencyId")
+                    b.Property<Guid>("DirectionId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateOnly>("EndedAt")
-                        .HasColumnType("date");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("MainPhotoLink")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<string>("MainPhotoTitle")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<Guid>("MeetPointId")
                         .HasColumnType("uuid");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
-
-                    b.Property<Guid?>("ProviderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("RouteId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateOnly>("StartedAt")
-                        .HasColumnType("date");
-
-                    b.Property<int>("TicketNumber")
+                    b.Property<int?>("MinAge")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("ParticipateTerms")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<Guid>("ProviderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("RouteDifficultyDescription")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ShortDescription")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<int>("TotalRate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("TransferDetails")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("VisaDetails")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<bool>("VisaMandatory")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AvailableTicketNumber");
+                    b.HasIndex("Difficulty");
 
-                    b.HasIndex("CurrencyCode");
+                    b.HasIndex("DirectionId");
 
-                    b.HasIndex("CurrencyId");
+                    b.HasIndex("IsActive");
 
                     b.HasIndex("MeetPointId");
 
+                    b.HasIndex("Name");
+
                     b.HasIndex("ProviderId");
 
-                    b.HasIndex("RouteId");
-
-                    b.HasIndex("Price", "CurrencyId");
+                    b.HasIndex("TotalRate");
 
                     b.ToTable("Tours");
                 });
@@ -410,7 +499,7 @@ namespace Elysium.Migrations
                     b.ToTable("TeamMemberTour");
                 });
 
-            modelBuilder.Entity("CategoryRoute", b =>
+            modelBuilder.Entity("CategoryTour", b =>
                 {
                     b.HasOne("Elysium.Model.Category", null)
                         .WithMany()
@@ -418,11 +507,18 @@ namespace Elysium.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Elysium.Model.Route", null)
+                    b.HasOne("Elysium.Model.Tour", null)
                         .WithMany()
                         .HasForeignKey("RoutesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Elysium.Model.Language", b =>
+                {
+                    b.HasOne("Elysium.Model.Tour", null)
+                        .WithMany("Languages")
+                        .HasForeignKey("TourId");
                 });
 
             modelBuilder.Entity("Elysium.Model.Photo", b =>
@@ -431,32 +527,36 @@ namespace Elysium.Migrations
                         .WithMany("Photos")
                         .HasForeignKey("LocationId");
 
-                    b.HasOne("Elysium.Model.RoutePoint", "Point")
-                        .WithMany()
-                        .HasForeignKey("RoutePointId")
+                    b.HasOne("Elysium.Model.ScheduleItem", "ScheduleItem")
+                        .WithMany("Photos")
+                        .HasForeignKey("ScheduleItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Point");
+                    b.Navigation("ScheduleItem");
                 });
 
-            modelBuilder.Entity("Elysium.Model.Route", b =>
+            modelBuilder.Entity("Elysium.Model.Ride", b =>
                 {
-                    b.HasOne("Elysium.Model.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
+                    b.HasOne("Elysium.Model.Currency", "Currency")
+                        .WithMany("Tours")
+                        .HasForeignKey("CurrencyCode")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Elysium.Model.Provider", "Provider")
-                        .WithMany()
-                        .HasForeignKey("ProviderId")
+                    b.HasOne("Elysium.Model.Provider", null)
+                        .WithMany("Tours")
+                        .HasForeignKey("ProviderId");
+
+                    b.HasOne("Elysium.Model.Tour", "Tour")
+                        .WithMany("Rides")
+                        .HasForeignKey("TourId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Location");
+                    b.Navigation("Currency");
 
-                    b.Navigation("Provider");
+                    b.Navigation("Tour");
                 });
 
             modelBuilder.Entity("Elysium.Model.RoutePoint", b =>
@@ -467,22 +567,33 @@ namespace Elysium.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Elysium.Model.Route", "Route")
-                        .WithMany("Points")
-                        .HasForeignKey("RouteId")
+                    b.HasOne("Elysium.Model.ScheduleItem", "ScheduleItem")
+                        .WithMany("RoutePoints")
+                        .HasForeignKey("ScheduleItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Location");
 
-                    b.Navigation("Route");
+                    b.Navigation("ScheduleItem");
+                });
+
+            modelBuilder.Entity("Elysium.Model.ScheduleItem", b =>
+                {
+                    b.HasOne("Elysium.Model.Tour", "Tour")
+                        .WithMany("ScheduleItems")
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tour");
                 });
 
             modelBuilder.Entity("Elysium.Model.Tour", b =>
                 {
-                    b.HasOne("Elysium.Model.Currency", "Currency")
-                        .WithMany("Tours")
-                        .HasForeignKey("CurrencyCode")
+                    b.HasOne("Elysium.Model.Location", "Direction")
+                        .WithMany()
+                        .HasForeignKey("DirectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -492,21 +603,17 @@ namespace Elysium.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Elysium.Model.Provider", null)
-                        .WithMany("Tours")
-                        .HasForeignKey("ProviderId");
-
-                    b.HasOne("Elysium.Model.Route", "Route")
-                        .WithMany("Tours")
-                        .HasForeignKey("RouteId")
+                    b.HasOne("Elysium.Model.Provider", "Provider")
+                        .WithMany()
+                        .HasForeignKey("ProviderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Currency");
+                    b.Navigation("Direction");
 
                     b.Navigation("MeetPoint");
 
-                    b.Navigation("Route");
+                    b.Navigation("Provider");
                 });
 
             modelBuilder.Entity("TeamMemberTour", b =>
@@ -541,11 +648,20 @@ namespace Elysium.Migrations
                     b.Navigation("Tours");
                 });
 
-            modelBuilder.Entity("Elysium.Model.Route", b =>
+            modelBuilder.Entity("Elysium.Model.ScheduleItem", b =>
                 {
-                    b.Navigation("Points");
+                    b.Navigation("Photos");
 
-                    b.Navigation("Tours");
+                    b.Navigation("RoutePoints");
+                });
+
+            modelBuilder.Entity("Elysium.Model.Tour", b =>
+                {
+                    b.Navigation("Languages");
+
+                    b.Navigation("Rides");
+
+                    b.Navigation("ScheduleItems");
                 });
 #pragma warning restore 612, 618
         }

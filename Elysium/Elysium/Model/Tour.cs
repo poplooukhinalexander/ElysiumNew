@@ -2,19 +2,35 @@
 {
     public class Tour
     {
-        public Guid Id { get; set; }        
-        public DateOnly StartedAt { get; set; } = default!;
-        public DateOnly EndedAt { get; set; } = default!;
-        public DateTime? ArchivedAt { get; set; }     
+        public Guid Id { get; set; }
+        public string Name { get; set; } = default!;
+        public string ShortDescription { get; set; } = default!;
+        public string DetailedDescription { get; set; } = default!;
+        public virtual List<Category> Categories { get; set; } = new List<Category>();
+        public RouteDifficulty? Difficulty { get; set; } = RouteDifficulty.Medium;
+        public string? RouteDifficultyDescription { get; set; }
+        public virtual List<Language> Languages { get; set; } = new List<Language>();
+        public Guid DirectionId { get; set; }     
+        public virtual Location Direction { get; set; } = default!;
         public Guid MeetPointId { get; set; }
-        public Location MeetPoint { get; set; } = default!;
-        public Guid RouteId { get; set; }
-        public virtual Route Route { get; set; } = default!;        
-        public virtual List<TeamMember> TeamMembers { get; set; } = new List<TeamMember>();  
-        public double Price { get; set; } = default!;
-        public Guid CurrencyId { get; set; }
-        public virtual Currency Currency { get; set; } = default!;
-        public int TicketNumber { get; set; } = default!;
-        public int AvailableTicketNumber { get; set; } = default!;
+        public virtual Location MeetPoint { get; set; } = default!;     
+        public Guid ProviderId { get; set; }
+        public virtual Provider Provider { get; set; } = default!;
+        public virtual List<Ride> Rides { get; set; } = new List<Ride>();
+        public virtual List<TeamMember> TeamMembers { get; set; } = new List<TeamMember>();
+        public bool VisaMandatory { get; set; } = false;
+        public string? VisaDetails { get; set;}
+        public string TransferDetails { get; set; } = default!;       
+        public string MainPhotoLink { get; set; } = default!;
+        public string MainPhotoTitle { get; set; } = default!;
+        /// <summary>
+        /// Общий рейтинг: популярность тура + отзывы о туре.
+        /// </summary>
+        public int TotalRate { get; set; } = 0;    
+        public int? MinAge { get; set; }
+        public string ParticipateTerms { get; set; } = default!;
+        public virtual List<ScheduleItem> ScheduleItems { get; set; } = new List<ScheduleItem>();
+        public DateOnly? ArchivedAt { get; set; }
+        public bool IsActive { get; set; } = false;
     }
 }

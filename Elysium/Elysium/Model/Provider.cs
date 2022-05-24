@@ -10,6 +10,6 @@
         public string? VKId { get; set; }
         public string? InstagramId { get; set; }
         public int Rate { get; set; } = 0;
-        public virtual List<Tour> Tours { get; set; } = new List<Tour>();
+        public virtual List<Ride> Tours { get; set; } = new List<Ride>();
     }
 }

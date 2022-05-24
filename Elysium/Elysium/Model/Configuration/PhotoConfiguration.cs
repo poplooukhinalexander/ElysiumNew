@@ -9,7 +9,7 @@ namespace Elysium.Model.Configuration
         {
             builder.Property(_ => _.Link).IsRequired().HasMaxLength(512);
             builder.Property(_ => _.Title).IsRequired().HasMaxLength(200);
-            builder.HasIndex(_ => _.RoutePointId);
+            builder.HasIndex(_ => _.ScheduleItemId);
         }
     }
 }

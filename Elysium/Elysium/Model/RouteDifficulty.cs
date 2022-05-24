@@ -4,7 +4,6 @@
     {
         Easy = 0,
         Medium = 1,
-        Hard = 2,
-        Professional = 3,
+        Hard = 2,      
     }
 }

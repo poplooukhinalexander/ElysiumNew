@@ -5,6 +5,6 @@
         public Guid Id { get; set; }
         public string Name { get; set; } = default!;
         public DateTime? ArchivedAt { get; set; }
-        public virtual List<Route> Routes { get; set; } = new List<Route>();
+        public virtual List<Tour> Routes { get; set; } = new List<Tour>();
     }
 }

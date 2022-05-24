@@ -9,9 +9,10 @@ namespace Elysium.Model
         public DbSet<Location> Locations { get; set; } = default!;
         public DbSet<Photo> Photos { get; set; } = default!;
         public DbSet<Provider> Proviers { get; set; } = default!;
-        public DbSet<Route> Routes { get; set; } = default!;
-        public DbSet<TeamMember> TeamMembers { get; set; } = default!; 
         public DbSet<Tour> Tours { get; set; } = default!;
+        public DbSet<TeamMember> TeamMembers { get; set; } = default!; 
+        public DbSet<Ride> Rides { get; set; } = default!;
+        public DbSet<ScheduleItem> ScheduleItems { get; set; } = default!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

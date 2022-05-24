@@ -3,7 +3,7 @@
     public class TeamMember
     {
         public Guid Id { get; set; }
-        public string Name { get; set; } = default!;
+        public string? Name { get; set; }
         public string? PhotoLink { get; set; }
         public string Profession { get; set; } = default!; 
         public string? Description { get; set; }
