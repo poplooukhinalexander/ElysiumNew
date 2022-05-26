@@ -10,7 +10,7 @@
         public string? Street { get; set; }
         public int? HouseNumber { get; set; }
         public string? Description { get; set; }
-        public double? Longitide { get; set; }
+        public double? Longitude { get; set; }
         public double? Latitude { get; set; }
         public virtual IEnumerable<Photo> Photos { get; set; } = new List<Photo>();
         public virtual IEnumerable<RoutePoint> Points { get; set; } = new List<RoutePoint>();

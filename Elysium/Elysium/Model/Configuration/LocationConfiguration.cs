@@ -9,7 +9,7 @@ namespace Elysium.Model.Configuration
         {
             builder.HasIndex(_ => new { _.Name, _.Region });
             builder.HasIndex(_ => new { _.Region, _.Name });
-            builder.HasIndex(_ => new { _.Longitide, _.Latitude }).HasFilter("NOT Longitude IS NULL AND NOT Latitude IS NULL");
+            builder.HasIndex(_ => new { _.Longitude, _.Latitude });
             builder.Property(_ => _.Name).IsRequired().HasMaxLength(100);
             builder.Property(_ => _.Description).HasMaxLength(250);
             builder.Property(_ => _.Region).IsRequired().HasMaxLength(100);

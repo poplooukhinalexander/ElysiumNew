@@ -46,7 +46,7 @@ namespace Elysium.Migrations
                     Street = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     HouseNumber = table.Column<int>(type: "integer", nullable: true),
                     Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
-                    Longitide = table.Column<double>(type: "double precision", nullable: true),
+                    Longitude = table.Column<double>(type: "double precision", nullable: true),
                     Latitude = table.Column<double>(type: "double precision", nullable: true)
                 },
                 constraints: table =>
@@ -108,6 +108,7 @@ namespace Elysium.Migrations
                     MainPhotoLink = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
                     MainPhotoTitle = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     TotalRate = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
+                    UserRate = table.Column<int>(type: "integer", nullable: false),
                     MinAge = table.Column<int>(type: "integer", nullable: true),
                     ParticipateTerms = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     ArchivedAt = table.Column<DateOnly>(type: "date", nullable: true),
@@ -337,10 +338,9 @@ namespace Elysium.Migrations
                 columns: new[] { "Country", "Region", "City", "Street", "HouseNumber" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Locations_Longitide_Latitude",
+                name: "IX_Locations_Longitude_Latitude",
                 table: "Locations",
-                columns: new[] { "Longitide", "Latitude" },
-                filter: "NOT Longitude IS NULL AND NOT Latitude IS NULL");
+                columns: new[] { "Longitude", "Latitude" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Locations_Name_Region",

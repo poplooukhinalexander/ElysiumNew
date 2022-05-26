@@ -16,7 +16,7 @@ namespace Elysium.Model
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Database=elysium;Username=elysium;Password=elysium12345");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=elysium;Username=postgres;Password=flame2005");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

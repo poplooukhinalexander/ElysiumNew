@@ -23,10 +23,16 @@
         public string TransferDetails { get; set; } = default!;       
         public string MainPhotoLink { get; set; } = default!;
         public string MainPhotoTitle { get; set; } = default!;
+
         /// <summary>
-        /// Общий рейтинг: популярность тура + отзывы о туре.
+        /// Общий рейтинг: бронирование мест + отзывы о туре.
         /// </summary>
         public int TotalRate { get; set; } = 0;    
+
+        /// <summary>
+        /// Отзывы пользователей.
+        /// </summary>
+        public int UserRate { get; set; } = 0;
         public int? MinAge { get; set; }
         public string ParticipateTerms { get; set; } = default!;
         public virtual List<ScheduleItem> ScheduleItems { get; set; } = new List<ScheduleItem>();

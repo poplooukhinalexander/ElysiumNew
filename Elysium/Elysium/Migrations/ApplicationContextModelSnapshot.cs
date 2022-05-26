@@ -119,7 +119,7 @@ namespace Elysium.Migrations
                     b.Property<double?>("Latitude")
                         .HasColumnType("double precision");
 
-                    b.Property<double?>("Longitide")
+                    b.Property<double?>("Longitude")
                         .HasColumnType("double precision");
 
                     b.Property<string>("Name")
@@ -140,8 +140,7 @@ namespace Elysium.Migrations
 
                     b.HasIndex("Region");
 
-                    b.HasIndex("Longitide", "Latitude")
-                        .HasFilter("NOT Longitude IS NULL AND NOT Latitude IS NULL");
+                    b.HasIndex("Longitude", "Latitude");
 
                     b.HasIndex("Name", "Region");
 
@@ -453,6 +452,9 @@ namespace Elysium.Migrations
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("character varying(300)");
+
+                    b.Property<int>("UserRate")
+                        .HasColumnType("integer");
 
                     b.Property<string>("VisaDetails")
                         .HasMaxLength(200)
