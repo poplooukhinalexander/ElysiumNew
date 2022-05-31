@@ -5,3 +5,13 @@
 /Elysium/.vs/Elysium/FileContentIndex/*.vsidx
 /Elysium/.vs/Elysium/FileContentIndex/*.lock
 /Elysium/.vs/ProjectEvaluation/*.v2
+/Elysium/ImportLocations/bin/Debug/net6.0/ImportLocations.deps.json
+/Elysium/ImportLocations/bin/Debug/net6.0/*.dll
+/Elysium/ImportLocations/bin/Debug/net6.0/*.exe
+/Elysium/ImportLocations/bin/Debug/net6.0/*.pdb
+/Elysium/ImportLocations/obj/Debug/net6.0/*.cache
+/Elysium/ImportLocations/obj/Debug/net6.0/*.editorconfig
+/Elysium/ImportLocations/obj/Debug/net6.0/ImportLocations.GlobalUsings.g.cs
+bin
+obj
+packages

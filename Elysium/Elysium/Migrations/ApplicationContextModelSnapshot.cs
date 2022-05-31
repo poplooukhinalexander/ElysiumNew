@@ -169,7 +169,6 @@ namespace Elysium.Migrations
                         .HasColumnType("character varying(200)");
 
                     b.Property<string>("Region")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 

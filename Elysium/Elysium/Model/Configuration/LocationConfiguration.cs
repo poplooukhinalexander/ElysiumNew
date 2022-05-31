@@ -15,7 +15,7 @@ namespace Elysium.Model.Configuration
             builder.HasIndex(_ => new { _.Longitude, _.Latitude });
             builder.Property(_ => _.Name).IsRequired().HasMaxLength(200);
             builder.Property(_ => _.Description).HasMaxLength(250);
-            builder.Property(_ => _.Region).IsRequired().HasMaxLength(100);
+            builder.Property(_ => _.Region).HasMaxLength(100);
             builder.Property(_ => _.Country).IsRequired().HasMaxLength(100);
             builder.Property(_ => _.City).HasMaxLength(100);
             builder.Property(_ => _.Street).HasMaxLength(100);

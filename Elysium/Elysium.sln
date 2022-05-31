@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elysium", "Elysium\Elysium.csproj", "{965E173B-4A63-4DA6-AE47-1FED0F582F33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elysium", "Elysium\Elysium.csproj", "{965E173B-4A63-4DA6-AE47-1FED0F582F33}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{734BEB36-EA45-4055-BA28-6BC2D64C7DB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportLocations", "ImportLocations\ImportLocations.csproj", "{AD5B2702-2C2D-4BBC-B640-670D7F74E170}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{965E173B-4A63-4DA6-AE47-1FED0F582F33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{965E173B-4A63-4DA6-AE47-1FED0F582F33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{965E173B-4A63-4DA6-AE47-1FED0F582F33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD5B2702-2C2D-4BBC-B640-670D7F74E170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD5B2702-2C2D-4BBC-B640-670D7F74E170}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD5B2702-2C2D-4BBC-B640-670D7F74E170}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD5B2702-2C2D-4BBC-B640-670D7F74E170}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AD5B2702-2C2D-4BBC-B640-670D7F74E170} = {734BEB36-EA45-4055-BA28-6BC2D64C7DB5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09D2AD19-3F41-40C0-928A-BA7BF5EFDD35}
