@@ -6,6 +6,7 @@
         public string Name { get; set; } = default!;
         public string Region { get; set; } = default!;
         public string Country { get; set; } = default!;
+        public string? District { get; set; }
         public string? City { get; set; }
         public string? Street { get; set; }
         public int? HouseNumber { get; set; }

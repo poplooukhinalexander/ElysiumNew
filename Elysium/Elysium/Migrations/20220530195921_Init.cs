@@ -35,13 +35,26 @@ namespace Elysium.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Language",
+                columns: table => new
+                {
+                    Code = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Language", x => x.Code);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Region = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Country = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    District = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     City = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     Street = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     HouseNumber = table.Column<int>(type: "integer", nullable: true),
@@ -107,8 +120,9 @@ namespace Elysium.Migrations
                     TransferDetails = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     MainPhotoLink = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
                     MainPhotoTitle = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    TotalRate = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    UserRate = table.Column<int>(type: "integer", nullable: false),
+                    Popularity = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
+                    Rate = table.Column<int>(type: "integer", nullable: false),
+                    FeedbackCount = table.Column<int>(type: "integer", nullable: false),
                     MinAge = table.Column<int>(type: "integer", nullable: true),
                     ParticipateTerms = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     ArchivedAt = table.Column<DateOnly>(type: "date", nullable: true),
@@ -162,21 +176,27 @@ namespace Elysium.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Language",
+                name: "LanguageTour",
                 columns: table => new
                 {
-                    Code = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    TourId = table.Column<Guid>(type: "uuid", nullable: true)
+                    LanguagesCode = table.Column<string>(type: "text", nullable: false),
+                    ToursId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Language", x => x.Code);
+                    table.PrimaryKey("PK_LanguageTour", x => new { x.LanguagesCode, x.ToursId });
                     table.ForeignKey(
-                        name: "FK_Language_Tours_TourId",
-                        column: x => x.TourId,
+                        name: "FK_LanguageTour_Language_LanguagesCode",
+                        column: x => x.LanguagesCode,
+                        principalTable: "Language",
+                        principalColumn: "Code",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LanguageTour_Tours_ToursId",
+                        column: x => x.ToursId,
                         principalTable: "Tours",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -316,6 +336,21 @@ namespace Elysium.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Language",
+                columns: new[] { "Code", "Name" },
+                values: new object[,]
+                {
+                    { "ara", "Arabic" },
+                    { "deu", "German" },
+                    { "eng", "English" },
+                    { "fra", "French" },
+                    { "ita", "Italian" },
+                    { "jpn", "Japanese" },
+                    { "rus", "Russian" },
+                    { "spa", "Spanish" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_Name",
                 table: "Categories",
@@ -328,9 +363,9 @@ namespace Elysium.Migrations
                 column: "RoutesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Language_TourId",
-                table: "Language",
-                column: "TourId");
+                name: "IX_LanguageTour_ToursId",
+                table: "LanguageTour",
+                column: "ToursId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Locations_Country_Region_City_Street_HouseNumber",
@@ -459,14 +494,14 @@ namespace Elysium.Migrations
                 column: "Name");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tours_Popularity",
+                table: "Tours",
+                column: "Popularity");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tours_ProviderId",
                 table: "Tours",
                 column: "ProviderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tours_TotalRate",
-                table: "Tours",
-                column: "TotalRate");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -475,7 +510,7 @@ namespace Elysium.Migrations
                 name: "CategoryTour");
 
             migrationBuilder.DropTable(
-                name: "Language");
+                name: "LanguageTour");
 
             migrationBuilder.DropTable(
                 name: "Photos");
@@ -491,6 +526,9 @@ namespace Elysium.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Language");
 
             migrationBuilder.DropTable(
                 name: "Currencies");

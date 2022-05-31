@@ -19,8 +19,8 @@ namespace Elysium.Model.Configuration
             builder.Property(_ => _.VisaDetails).HasMaxLength(200);
             builder.Property(_ => _.MainPhotoLink).IsRequired().HasMaxLength(512);
             builder.Property(_ => _.MainPhotoTitle).IsRequired().HasMaxLength(200);
-            builder.Property(_ => _.TotalRate).IsRequired().HasDefaultValue(0);
-            builder.HasIndex(_ => _.TotalRate);
+            builder.Property(_ => _.Popularity).IsRequired().HasDefaultValue(0);
+            builder.HasIndex(_ => _.Popularity);
             builder.HasIndex(_ => _.IsActive);
             builder.Property(_ => _.TransferDetails).IsRequired().HasMaxLength(300);
             builder.Property(_ => _.ParticipateTerms).IsRequired().HasMaxLength(200);

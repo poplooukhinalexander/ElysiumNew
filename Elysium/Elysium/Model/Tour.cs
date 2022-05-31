@@ -25,14 +25,19 @@
         public string MainPhotoTitle { get; set; } = default!;
 
         /// <summary>
-        /// Общий рейтинг: бронирование мест + отзывы о туре.
+        /// Популярность тура.
         /// </summary>
-        public int TotalRate { get; set; } = 0;    
+        public int Popularity { get; set; } = 0;    
 
         /// <summary>
         /// Отзывы пользователей.
         /// </summary>
-        public int UserRate { get; set; } = 0;
+        public int Rate { get; set; } = 0;
+
+        /// <summary>
+        /// Кол-во отзывов.
+        /// </summary>
+        public int FeedbackCount { get; set; } = 0;
         public int? MinAge { get; set; }
         public string ParticipateTerms { get; set; } = default!;
         public virtual List<ScheduleItem> ScheduleItems { get; set; } = new List<ScheduleItem>();
